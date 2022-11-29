@@ -14,6 +14,8 @@ public class Main {
     private final static DateTimeFormatter TASK_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH.mm");
     private final static DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
+    private final static Service<Task> service = new Service<>();
+
     public static void main(String[] args) {
 
         try (Scanner scanner = new Scanner(System.in)) {
@@ -31,15 +33,15 @@ public class Main {
                         case 2:
                             System.out.print("Введите название задачи, которую вы хотите удалить: ");
                             String taskName = scanner.next();
-                            Service<Task> service = new Service<>();
                             service.removeTask(taskName);
                             break;
                         case 3:
-                            Service<Task> service1 = new Service<>();
                             System.out.print("Введите дату, задачи на которую хотите получить: ");
                             LocalDate date = LocalDate.parse(scanner.next(), FORMAT);
-                            service1.getTasksForDay(LocalDate.from((TemporalAccessor) date));
-
+                            System.out.println(service.getTasksForDay(LocalDate.from(date)));
+                            break;
+                        case 4:
+                            service.printTasks();
                             break;
                         case 0:
                             break label;
@@ -51,8 +53,7 @@ public class Main {
             }
         }
         printMenu();
-        Service<Task> service2 = new Service<>();
-        service2.printTasks();
+
     }
 
     private static void inputTask(Scanner scanner) {
@@ -64,18 +65,22 @@ public class Main {
         LocalDateTime date = readTaskDate(scanner);
         System.out.print("Введите тип задачи: ");
         TaskType type = readTaskType(scanner);
-        Service<Task> service = new Service<>();
         switch (repeatType) {
             case SINGLE:
                 service.addTask(new SingleTask(taskName, description, date, type, repeatType));
+                break;
             case DAILY:
                 service.addTask(new DailyTask(taskName, description, date, type, repeatType));
+                break;
             case WEEKLY:
                 service.addTask(new WeeklyTask(taskName, description, date, type, repeatType));
+                break;
             case MONTHLY:
                 service.addTask(new MonthlyTask(taskName, description, date, type, repeatType));
+                break;
             case ANNUAL:
                 service.addTask(new AnnualTask(taskName, description, date, type, repeatType));
+                break;
         }
     }
 
@@ -85,6 +90,7 @@ public class Main {
                         1. Добавить задачу
                         2. Удалить задачу
                         3. Получить задачу на указанный день
+                        4. Получить список всех задач
                         0. Выход
                         """
         );

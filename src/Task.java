@@ -63,4 +63,10 @@ public class Task {
     public boolean appearsIn(LocalDate date) {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Название задачи: " + name + ", описание задачи: " + description + ", id: " + id + ", тип задачи: " + type +
+                ", дата первого выполнения: " + date + ", тип повторяемости: " + repeatType;
+    }
 }

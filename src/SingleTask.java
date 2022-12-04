@@ -6,7 +6,6 @@ public class SingleTask extends Task{
 
     public SingleTask(String name, String description, LocalDateTime date, TaskType type, RepeatType repeatType) {
         super(name, description, date, type, repeatType);
-        this.repeatType = RepeatType.SINGLE;
     }
 
     @Override
